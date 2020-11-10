@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.20-RC'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+group 'asd.qwerty'
+version '1.9'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+sourceCompatibility = 1.8
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+shadowJar {
+    manifest {
+        attributes 'Main-Class': 'EditFiles'
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'EditFiles'
+    }
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+
+    from {
+        (configurations.compile).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
